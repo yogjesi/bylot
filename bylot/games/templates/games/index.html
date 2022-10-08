@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid" style="padding: 3rem;">
+    <h1>두근두근 점심식사!</h1>
+    <form class="col-5 py-3" action="{% url 'games:roll' %}" method="POST">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" name="name" class="form-control">
+        <input type="submit" class="btn btn-primary" value="내 테이블은?">
+      </div>
+    </form>
+    {% if members %}
+      {% for member in members %}
+        <div class="row">
+          <div class="col-4">
+          {{ member.name }} : {{ member.table }}번 테이블 당첨!
+          </div>
+          <div class="col-1">
+            <form action="{% url 'games:delete' member.pk %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-sm btn-close" value=''>
+            </form>
+            <br>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock  %}
